@@ -8,9 +8,10 @@ import (
 var (
 	DB *gorm.DB
 )
+
 // 初始化连接
 func InitMySql() (err error) {
-	dsn := "root:root@tcp(127.0.0.1:3306)/user?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:123456@tcp(127.0.0.1:3307)/user?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		return
@@ -27,4 +28,3 @@ func InitMySql() (err error) {
 func Close() {
 	DB.Close()
 }
-
