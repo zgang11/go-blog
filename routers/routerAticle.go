@@ -2,6 +2,7 @@ package routers
 
 import (
 	"blog/controller"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,5 +16,7 @@ func LoadArticle(e *gin.Engine) {
 		Article.GET("all", ArticleController.GetArticle)
 		// 删除文章
 		Article.DELETE("delete", ArticleController.DeleteArticle)
+		// 文章详情
+		Article.GET("detail", ArticleController.GetArticleDetails)
 	}
 }

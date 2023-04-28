@@ -5,11 +5,12 @@ import (
 	"blog/dao/articles"
 	"blog/dao/tags"
 	"blog/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ArticleController struct {
@@ -154,4 +155,27 @@ func (a *ArticleController) DeleteArticle(c *gin.Context) {
 	})
 	return
 
+}
+
+func (a *ArticleController) GetArticleDetails(c *gin.Context) {
+	articleId := c.Query("articleId")
+	id, err := strconv.Atoi(articleId)
+	if err != nil {
+		return
+	}
+
+	articleDetail, e := articles.DetailsArticle(id)
+	if e != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1001,
+			"message": "failed",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":          1000,
+		"message":       "success",
+		"articleDetail": articleDetail,
+	})
+	return
 }
