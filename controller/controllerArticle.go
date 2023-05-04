@@ -5,6 +5,7 @@ import (
 	"blog/dao/articles"
 	"blog/dao/tags"
 	"blog/models"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -178,4 +179,104 @@ func (a *ArticleController) GetArticleDetails(c *gin.Context) {
 		"articleDetail": articleDetail,
 	})
 	return
+}
+
+// 更新文章
+func (a *ArticleController) UpdateArticle(c *gin.Context) {
+	id := c.PostForm("id")
+	title := c.PostForm("title")
+	categoryid := c.PostForm("category")
+	ossURL := c.PostForm("ossUrl")
+	status := c.PostForm("status")
+	html := c.PostForm("html")
+	md := c.PostForm("md")
+	tag := c.PostForm("tags")
+	tagsSplit := strings.Split(tag, ";")
+	fmt.Println(id, title)
+
+	//fmt.Printf("categoryid:%+v\n", categoryid)
+	category, err := strconv.Atoi(categoryid)
+	id_, err := strconv.Atoi(id)
+
+	// 判断文章状态 发布：1   存为草稿：0
+	var statu bool
+	if status == "true" {
+		statu = true
+	} else {
+		statu = false
+	}
+
+	article := &models.Article{
+		Title:        title,
+		CreateTime:   time.Now().UnixNano() / 1e6,
+		UpdateTime:   time.Now().UnixNano() / 1e6,
+		Status:       statu,
+		Md:           md,
+		Html:         html,
+		CoverAddress: ossURL,
+		Author:       "Lz12Code",
+		Top:          0,
+		CategoryId:   category,
+		Summary:      "阿斯顿撒",
+		Views:        888,
+		Id:           id_,
+	}
+	// 调用创建文章函数
+	err = articles.UpdateAticle(article)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1001,
+			"message": err,
+		})
+		return
+	}
+
+	for _, tag := range tagsSplit {
+
+		// 调用添加标签函数
+		tag := &models.Tag{
+			TagName:    tag,
+			CreateTime: time.Now().UnixNano() / 1e6,
+			UpdateTime: time.Now().UnixNano() / 1e6,
+		}
+
+		// 先查询tag是否存在
+		tagss, err := tags.QueryAllTagList(tag.TagName)
+		if err != nil {
+			//fmt.Println("error:", err)
+			return
+		}
+		//fmt.Printf("tagss:%+v", tagss)
+
+		// 数据库中已经存在该标签 就用原标签
+		if tagss.Id > 0 {
+			tag.Id = tagss.Id
+		} else {
+			// 数据库中没有该标签
+			// 不存在就添加
+			err = tags.CreateTag(tag)
+			if err != nil {
+				return
+			}
+		}
+
+		// 调用给第三张表 文章标签表添加记录的函数
+		articleTags := &models.ArticleTag{
+			ArticleId:  article.Id,
+			TagId:      tag.Id,
+			CreateTime: time.Now().UnixNano() / 1e6,
+			UpdateTime: time.Now().UnixNano() / 1e6,
+		}
+		err = articleTag.CreateArticleTag(articleTags)
+		if err != nil {
+			return
+		}
+
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    1000,
+		"message": "success",
+	})
+
 }

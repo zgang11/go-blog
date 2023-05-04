@@ -18,5 +18,7 @@ func LoadArticle(e *gin.Engine) {
 		Article.DELETE("delete", ArticleController.DeleteArticle)
 		// 文章详情
 		Article.GET("detail", ArticleController.GetArticleDetails)
+		// 更新文章
+		Article.POST("update", ArticleController.UpdateArticle)
 	}
 }

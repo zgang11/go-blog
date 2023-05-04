@@ -113,3 +113,12 @@ func DetailsArticle(articleId int) (articleDetails *models.Article, err error) {
 	}
 	return article, err
 }
+
+// 更新文章
+func UpdateAticle(article *models.Article) (err error) {
+	err = database.DB.Debug().Model(&models.Article{}).Where("id = ?", article.Id).Update(article).Error
+	if err != nil {
+		return
+	}
+	return
+}
