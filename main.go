@@ -5,6 +5,7 @@ import (
 	"blog/middleware"
 	"blog/models"
 	"blog/routers"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +18,7 @@ func main() {
 	// 关闭连接
 	defer database.DB.Close()
 	// 模型和数据库表映射 创建表
-	database.DB.AutoMigrate(&models.User{},&models.Category{},&models.Article{},&models.Tag{},&models.ArticleTag{})
+	database.DB.AutoMigrate(&models.User{}, &models.Category{}, &models.Article{}, &models.Tag{}, &models.ArticleTag{})
 	// 注册路由
 	r := gin.Default()
 	// 将中间件注册到全局 对所有路由生效
@@ -30,6 +31,8 @@ func main() {
 	routers.ImgUpload(r)
 	// 文章管理
 	routers.LoadArticle(r)
+	// 标签
+	routers.LoadTag(r)
 
 	r.Run(":8081")
 

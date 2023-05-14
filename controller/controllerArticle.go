@@ -3,7 +3,6 @@ package controller
 import (
 	"blog/dao/articleTag"
 	"blog/dao/articles"
-	"blog/dao/tags"
 	"blog/models"
 	"fmt"
 	"net/http"
@@ -20,17 +19,17 @@ type ArticleController struct {
 // 发布文章  保存草稿
 func (a *ArticleController) CreateArticle(c *gin.Context) {
 	title := c.PostForm("title")
-	categoryid := c.PostForm("category")
+	summary := c.PostForm("summary")
+	categoryId := c.PostForm("categoryid")
 	ossURL := c.PostForm("ossUrl")
 	status := c.PostForm("status")
 	html := c.PostForm("html")
 	md := c.PostForm("md")
-	tag := c.PostForm("tags")
-	tagsSplit := strings.Split(tag, ";")
+	// tag := c.PostForm("tags")
+	// tagsSplit := strings.Split(tag, ",")
 	//fmt.Println(tagsSplit)
 
-	//fmt.Printf("categoryid:%+v\n", categoryid)
-	category, err := strconv.Atoi(categoryid)
+	categoryId_, err := strconv.Atoi(categoryId)
 
 	// 判断文章状态 发布：1   存为草稿：0
 	var statu bool
@@ -48,11 +47,11 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 		Md:           md,
 		Html:         html,
 		CoverAddress: ossURL,
-		Author:       "Lz12Code",
+		Author:       "zhanggang",
 		Top:          0,
-		CategoryId:   category,
-		Summary:      "阿斯顿撒",
-		Views:        888,
+		CategoryId:   categoryId_,
+		Summary:      summary,
+		Views:        0,
 	}
 	// 调用创建文章函数
 	err = articles.CreateAticle(article)
@@ -64,48 +63,46 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 		return
 	}
 
-	for _, tag := range tagsSplit {
+	// for _, TagName := range tagsSplit {
 
-		// 调用添加标签函数
-		tag := &models.Tag{
-			TagName:    tag,
-			CreateTime: time.Now().UnixNano() / 1e6,
-			UpdateTime: time.Now().UnixNano() / 1e6,
-		}
+	// 	// 调用添加标签函数
+	// 	tag := &models.Tag{
+	// 		TagName:    TagName,
+	// 		CreateTime: time.Now().UnixNano() / 1e6,
+	// 		UpdateTime: time.Now().UnixNano() / 1e6,
+	// 	}
 
-		// 先查询tag是否存在
-		tagss, err := tags.QueryAllTagList(tag.TagName)
-		if err != nil {
-			//fmt.Println("error:", err)
-			return
-		}
-		//fmt.Printf("tagss:%+v", tagss)
+	// 	// 先查询tag是否存在
+	// 	tagss, err := tags.QueryAllTagList(tag.TagName)
+	// 	if err != nil {
+	// 		return
+	// 	}
 
-		// 数据库中已经存在该标签 就用原标签
-		if tagss.Id > 0 {
-			tag.Id = tagss.Id
-		} else {
-			// 数据库中没有该标签
-			// 不存在就添加
-			err = tags.CreateTag(tag)
-			if err != nil {
-				return
-			}
-		}
+	// 	// 数据库中已经存在该标签 就用原标签
+	// 	if tagss.Id > 0 {
+	// 		tag.Id = tagss.Id
+	// 	} else {
+	// 		// 数据库中没有该标签
+	// 		// 不存在就添加
+	// 		err = tags.CreateTag(tag)
+	// 		if err != nil {
+	// 			return
+	// 		}
+	// 	}
 
-		// 调用给第三张表 文章标签表添加记录的函数
-		articleTags := &models.ArticleTag{
-			ArticleId:  article.Id,
-			TagId:      tag.Id,
-			CreateTime: time.Now().UnixNano() / 1e6,
-			UpdateTime: time.Now().UnixNano() / 1e6,
-		}
-		err = articleTag.CreateArticleTag(articleTags)
-		if err != nil {
-			return
-		}
+	// 	// 调用给第三张表 文章标签表添加记录的函数
+	// 	articleTags := &models.ArticleTag{
+	// 		ArticleId:  article.Id,
+	// 		TagId:      tag.Id,
+	// 		CreateTime: time.Now().UnixNano() / 1e6,
+	// 		UpdateTime: time.Now().UnixNano() / 1e6,
+	// 	}
+	// 	err = articleTag.CreateArticleTag(articleTags)
+	// 	if err != nil {
+	// 		return
+	// 	}
 
-	}
+	// }
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    1000,
@@ -185,6 +182,7 @@ func (a *ArticleController) GetArticleDetails(c *gin.Context) {
 func (a *ArticleController) UpdateArticle(c *gin.Context) {
 	id := c.PostForm("id")
 	title := c.PostForm("title")
+	summary := c.PostForm("summary")
 	categoryid := c.PostForm("category")
 	ossURL := c.PostForm("ossUrl")
 	status := c.PostForm("status")
@@ -195,8 +193,8 @@ func (a *ArticleController) UpdateArticle(c *gin.Context) {
 	fmt.Println(id, title)
 
 	//fmt.Printf("categoryid:%+v\n", categoryid)
-	category, err := strconv.Atoi(categoryid)
-	id_, err := strconv.Atoi(id)
+	category, _ := strconv.Atoi(categoryid)
+	id_, _ := strconv.Atoi(id)
 
 	// 判断文章状态 发布：1   存为草稿：0
 	var statu bool
@@ -217,12 +215,12 @@ func (a *ArticleController) UpdateArticle(c *gin.Context) {
 		Author:       "Lz12Code",
 		Top:          0,
 		CategoryId:   category,
-		Summary:      "阿斯顿撒",
+		Summary:      summary,
 		Views:        888,
 		Id:           id_,
 	}
 	// 调用创建文章函数
-	err = articles.UpdateAticle(article)
+	err := articles.UpdateAticle(article)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    1001,
@@ -241,24 +239,22 @@ func (a *ArticleController) UpdateArticle(c *gin.Context) {
 		}
 
 		// 先查询tag是否存在
-		tagss, err := tags.QueryAllTagList(tag.TagName)
+		// tagss, err := tags.QueryAllTagList(tag.TagName)
 		if err != nil {
-			//fmt.Println("error:", err)
 			return
 		}
-		//fmt.Printf("tagss:%+v", tagss)
 
 		// 数据库中已经存在该标签 就用原标签
-		if tagss.Id > 0 {
-			tag.Id = tagss.Id
-		} else {
-			// 数据库中没有该标签
-			// 不存在就添加
-			err = tags.CreateTag(tag)
-			if err != nil {
-				return
-			}
-		}
+		// if tagss.Id > 0 {
+		// 	tag.Id = tagss.Id
+		// } else {
+		// 	// 数据库中没有该标签
+		// 	// 不存在就添加
+		// 	err = tags.CreateTag(tag)
+		// 	if err != nil {
+		// 		return
+		// 	}
+		// }
 
 		// 调用给第三张表 文章标签表添加记录的函数
 		articleTags := &models.ArticleTag{
