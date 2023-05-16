@@ -29,6 +29,7 @@ type ArticleList struct {
 	Views        int      `json:"views"`
 	Status       bool     `json:"status"`
 	TagName      []string `json:"tag_name"`
+	TagId        []int    `json:"tag_id"`
 	//models.Tag
 	//models.Article
 }
@@ -105,13 +106,32 @@ func DeleteArticle(articleId int) (err error) {
 }
 
 // 文章详情
-func DetailsArticle(articleId int) (articleDetails *models.Article, err error) {
+func DetailsArticle(articleId int) (articleDetails ArticleList, err error) {
 	article := &models.Article{}
 	err = database.DB.Debug().Find(article, articleId).Error
 	if err != nil {
 		return
 	}
-	return article, err
+
+	// 获取标签
+	Tag, err := tags.QueryTagsByArticleId(articleId)
+	tagId := make([]int, 0)
+	for _, v := range Tag {
+		tagId = append(tagId, v.Id)
+	}
+	fmt.Printf("tagId:%+v\n", tagId)
+
+	articleDetail := ArticleList{}
+	articleDetail.ID = article.Id
+	articleDetail.Title = article.Title
+	articleDetail.CoverAddress = article.CoverAddress
+	articleDetail.CreateTime = article.CreateTime
+	articleDetail.UpdateTime = article.UpdateTime
+	articleDetail.Views = article.Views
+	articleDetail.Status = article.Status
+	articleDetail.TagId = tagId
+
+	return articleDetail, err
 }
 
 // 更新文章

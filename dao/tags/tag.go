@@ -3,6 +3,7 @@ package tags
 import (
 	"blog/database"
 	"blog/models"
+	"fmt"
 )
 
 // 文章管理列表
@@ -70,4 +71,14 @@ func DeleteTag(tagId string) (err error) {
 		return
 	}
 	return
+}
+
+func QueryTagsByArticleId(articleId int) ([]models.ArticleTag, error) {
+	Tag := make([]models.ArticleTag, 0)
+	err := database.DB.Debug().Where("article_id = ?", articleId).Find(&Tag).Error
+	fmt.Println(err, Tag, articleId)
+	if err != nil {
+		return Tag, err
+	}
+	return Tag, err
 }

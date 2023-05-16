@@ -6,7 +6,6 @@ import (
 	"log"
 )
 
-
 // Todo 查询用户名和密码
 func GetUserInfo(username, password string) (user *models.User, err error) {
 	user = &models.User{} // 赋值给user

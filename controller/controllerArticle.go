@@ -25,7 +25,7 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 	status := c.PostForm("status")
 	html := c.PostForm("html")
 	md := c.PostForm("md")
-	// tag := c.PostForm("tags")
+	tags := c.PostForm("tags")
 	// tagsSplit := strings.Split(tag, ",")
 	//fmt.Println(tagsSplit)
 
@@ -63,46 +63,21 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 		return
 	}
 
-	// for _, TagName := range tagsSplit {
+	for _, tagId := range strings.Split(tags, ",") {
+		TagId, err := strconv.Atoi(tagId)
+		// 调用给第三张表 文章标签表添加记录的函数
+		articleTags := &models.ArticleTag{
+			ArticleId:  article.Id,
+			TagId:      TagId,
+			CreateTime: time.Now().UnixNano() / 1e6,
+			UpdateTime: time.Now().UnixNano() / 1e6,
+		}
+		err = articleTag.CreateArticleTag(articleTags)
+		if err != nil {
+			return
+		}
 
-	// 	// 调用添加标签函数
-	// 	tag := &models.Tag{
-	// 		TagName:    TagName,
-	// 		CreateTime: time.Now().UnixNano() / 1e6,
-	// 		UpdateTime: time.Now().UnixNano() / 1e6,
-	// 	}
-
-	// 	// 先查询tag是否存在
-	// 	tagss, err := tags.QueryAllTagList(tag.TagName)
-	// 	if err != nil {
-	// 		return
-	// 	}
-
-	// 	// 数据库中已经存在该标签 就用原标签
-	// 	if tagss.Id > 0 {
-	// 		tag.Id = tagss.Id
-	// 	} else {
-	// 		// 数据库中没有该标签
-	// 		// 不存在就添加
-	// 		err = tags.CreateTag(tag)
-	// 		if err != nil {
-	// 			return
-	// 		}
-	// 	}
-
-	// 	// 调用给第三张表 文章标签表添加记录的函数
-	// 	articleTags := &models.ArticleTag{
-	// 		ArticleId:  article.Id,
-	// 		TagId:      tag.Id,
-	// 		CreateTime: time.Now().UnixNano() / 1e6,
-	// 		UpdateTime: time.Now().UnixNano() / 1e6,
-	// 	}
-	// 	err = articleTag.CreateArticleTag(articleTags)
-	// 	if err != nil {
-	// 		return
-	// 	}
-
-	// }
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    1000,
