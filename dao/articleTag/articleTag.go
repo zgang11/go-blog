@@ -5,6 +5,14 @@ import (
 	"blog/models"
 )
 
+func DeleteArticleTag(articleId int) (err error) {
+	err = database.DB.Debug().Where("article_id = ?", articleId).Delete(&models.ArticleTag{}).Error
+	if err != nil {
+		return
+	}
+	return
+}
+
 // 创建文章标签记录表
 func CreateArticleTag(articleTag *models.ArticleTag) (err error) {
 	articleAndTag := &models.ArticleTag{}

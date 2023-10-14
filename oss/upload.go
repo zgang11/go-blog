@@ -2,10 +2,11 @@ package oss
 
 import (
 	"fmt"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	uuid "github.com/satori/go.uuid"
 	"io"
 	"os"
+
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	uuid "github.com/satori/go.uuid"
 )
 
 const (

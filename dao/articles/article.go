@@ -30,6 +30,8 @@ type ArticleList struct {
 	Status       bool     `json:"status"`
 	TagName      []string `json:"tag_name"`
 	TagId        []int    `json:"tag_id"`
+	Html         string   `json:"html"`
+	CategoryId   int      `json:"category_id"`
 	//models.Tag
 	//models.Article
 }
@@ -117,7 +119,7 @@ func DetailsArticle(articleId int) (articleDetails ArticleList, err error) {
 	Tag, err := tags.QueryTagsByArticleId(articleId)
 	tagId := make([]int, 0)
 	for _, v := range Tag {
-		tagId = append(tagId, v.Id)
+		tagId = append(tagId, v.TagId)
 	}
 	fmt.Printf("tagId:%+v\n", tagId)
 
@@ -129,7 +131,9 @@ func DetailsArticle(articleId int) (articleDetails ArticleList, err error) {
 	articleDetail.UpdateTime = article.UpdateTime
 	articleDetail.Views = article.Views
 	articleDetail.Status = article.Status
+	articleDetail.Html = article.Html
 	articleDetail.TagId = tagId
+	articleDetail.CategoryId = article.CategoryId
 
 	return articleDetail, err
 }

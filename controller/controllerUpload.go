@@ -1,9 +1,6 @@
 package controller
 
 import (
-	// "blog/oss"
-	"fmt"
-	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -26,24 +23,24 @@ func splitString(fileName string) (suffix string) {
 func (u *UploadController) UploadImg(c *gin.Context) {
 	// https://my.oschina.net/solate/blog/741039
 	// 因为上传文件的类型是multipart/form-data 所以不能使用 r.ParseForm(), 这个只能获得普通post
-	file, err := c.FormFile("file")
-	fmt.Println(file, err)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code":    1001,
-			"message": err,
-		})
-		return
-	}
+	//file, err := c.FormFile("file")
+	//fmt.Println(file, err)
+	//if err != nil {
+	//	c.JSON(http.StatusOK, gin.H{
+	//		"code":    1001,
+	//		"message": err,
+	//	})
+	//	return
+	//}
 	// 获取前端传过来文件的后缀名
-	// suffix := splitString(file.Filename)
+	//suffix := splitString(file.Filename)
 	//fmt.Println(header.Filename, header.Size, err)
 	// 上传图片到aliyun  oss
-	// imgUrl := oss.UploadImg(file, suffix)
-	c.JSON(http.StatusOK, gin.H{
-		"code":    1000,
-		"message": "success",
-		"imgurl":  "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-	})
-	return
+	//imgUrl := oss.UploadImg(file, suffix)
+	//c.JSON(http.StatusOK, gin.H{
+	//	"code":    1000,
+	//	"message": "success",
+	//	"imgurl":  imgUrl,
+	//})
+	//return
 }
