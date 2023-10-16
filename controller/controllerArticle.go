@@ -21,9 +21,9 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 	title := c.PostForm("title")
 	status := c.PostForm("status")
 	html := c.PostForm("html")
-	companyId := c.PostForm("companyId")
+	//companyId := c.PostForm("companyId")
 	categoryId := c.PostForm("categoryid")
-	author := c.PostForm("author")
+	//author := c.PostForm("author")
 
 	// tagsSplit := strings.Split(tag, ",")
 	//fmt.Println(tagsSplit)
@@ -57,20 +57,20 @@ func (a *ArticleController) CreateArticle(c *gin.Context) {
 		return
 	}
 
-	for _, tagId := range strings.Split(tags, ",") {
-		TagId, err := strconv.Atoi(tagId)
-		// 调用给第三张表 文章标签表添加记录的函数
-		articleTags := &models.ArticleTag{
-			ArticleId:  article.Id,
-			TagId:      TagId,
-			CreateTime: time.Now().UnixNano() / 1e6,
-			UpdateTime: time.Now().UnixNano() / 1e6,
-		}
-		err = articleTag.CreateArticleTag(articleTags)
-		if err != nil {
-			return
-		}
-	}
+	//for _, tagId := range strings.Split(tags, ",") {
+	//	TagId, err := strconv.Atoi(tagId)
+	//	// 调用给第三张表 文章标签表添加记录的函数
+	//	articleTags := &models.ArticleTag{
+	//		ArticleId:  article.Id,
+	//		TagId:      TagId,
+	//		CreateTime: time.Now().UnixNano() / 1e6,
+	//		UpdateTime: time.Now().UnixNano() / 1e6,
+	//	}
+	//	err = articleTag.CreateArticleTag(articleTags)
+	//	if err != nil {
+	//		return
+	//	}
+	//}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    1000,
