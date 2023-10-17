@@ -38,15 +38,13 @@ func (w *CategoryController) GetCategory(c *gin.Context) {
 
 }
 
-
-
 // 添加方法
 func (w *CategoryController) CreateCategory(c *gin.Context) {
 	categoryName := c.PostForm("category_name")
 	category := &models.Category{
 		CategoryName: categoryName,
-		CreateTime:   time.Now().UnixNano()/1e6,
-		UpdateTime:   time.Now().UnixNano()/1e6,
+		CreateTime:   time.Now().UnixNano() / 1e6,
+		UpdateTime:   time.Now().UnixNano() / 1e6,
 	}
 	err := catagory.CreateCategory(category)
 	if err != nil {
@@ -65,8 +63,6 @@ func (w *CategoryController) CreateCategory(c *gin.Context) {
 
 }
 
-
-
 // 修改方法
 func (w *CategoryController) ModifyCategory(c *gin.Context) {
 	categoryName := c.PostForm("category_name")
@@ -81,7 +77,7 @@ func (w *CategoryController) ModifyCategory(c *gin.Context) {
 	category := &models.Category{
 		Id:           Id,
 		CategoryName: categoryName,
-		UpdateTime:   time.Now().UnixNano()/1e6,
+		UpdateTime:   time.Now().UnixNano() / 1e6,
 	}
 
 	e := catagory.ModifyCategory(category)
@@ -100,9 +96,6 @@ func (w *CategoryController) ModifyCategory(c *gin.Context) {
 	return
 
 }
-
-
-
 
 // 删除方法
 func (w *CategoryController) DeleteCategory(c *gin.Context) {

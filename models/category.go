@@ -1,6 +1,5 @@
 package models
 
-
 // 分类表
 type Category struct {
 	Id           int    `json:"id" gorm:"not null unique pk INT(11) 'id'"`

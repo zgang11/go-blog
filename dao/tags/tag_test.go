@@ -56,9 +56,9 @@ func TestQueryAllTagList(t *testing.T) {
 		UpdateTime: time.Now().UnixNano() / 1e6,
 	}
 	tagss, err := QueryAllTagList(tags.TagName)
-	if err!=nil{
+	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
-	fmt.Printf("tagss:%+v",tagss.Id)
+	fmt.Printf("tagss:%+v", tagss.Id)
 }

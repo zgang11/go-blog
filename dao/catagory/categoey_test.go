@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 )
+
 // 数据库初始化
 func init() {
 	err := database.InitMySql()
@@ -19,8 +20,8 @@ func init() {
 func TestCreateCategory(t *testing.T) {
 	category := &models.Category{
 		CategoryName: "tytyt",
-		CreateTime:   time.Now().UnixNano()/1e6,
-		UpdateTime:   time.Now().UnixNano()/1e6,
+		CreateTime:   time.Now().UnixNano() / 1e6,
+		UpdateTime:   time.Now().UnixNano() / 1e6,
 	}
 
 	err := CreateCategory(category)
@@ -47,7 +48,7 @@ func TestModifyCategory(t *testing.T) {
 	category := &models.Category{
 		Id:           4,
 		CategoryName: "Django",
-		UpdateTime:   time.Now().UnixNano()/1e6,
+		UpdateTime:   time.Now().UnixNano() / 1e6,
 	}
 	err := ModifyCategory(category)
 	if err != nil {

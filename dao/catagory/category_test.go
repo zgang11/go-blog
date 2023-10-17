@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func init()  {
+func init() {
 	err := database.InitMySql()
 	if err != nil {
 		return
@@ -13,7 +13,7 @@ func init()  {
 }
 
 func TestQueryCategoryName(t *testing.T) {
-	categorySlice := []int{2,3}
+	categorySlice := []int{2, 3}
 
 	categoryMap, err := QueryCategoryName(categorySlice)
 	if err != nil {

@@ -21,7 +21,7 @@ func init() {
 // 发布文章
 func TestCreateAticle(t *testing.T) {
 	tagsNames := make([]string, 0)
-	tagsNames = append(tagsNames, "mysql", "mongo","redis")
+	tagsNames = append(tagsNames, "mysql", "mongo", "redis")
 	//tags, err := json.Marshal(&tagsName)
 	article := &models.Article{
 		Title:        "wahaha",
@@ -42,7 +42,7 @@ func TestCreateAticle(t *testing.T) {
 	if err != nil {
 		return
 	}
-	for _,tag := range tagsNames {
+	for _, tag := range tagsNames {
 
 		// 调用添加标签函数
 		tag := &models.Tag{

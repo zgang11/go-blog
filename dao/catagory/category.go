@@ -58,5 +58,3 @@ func QueryCategoryName(categorySlice []int) (map[int]string, error) {
 
 	return categoryMap, nil
 }
-
-
