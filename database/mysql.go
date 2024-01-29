@@ -11,7 +11,8 @@ var (
 
 // 初始化连接
 func InitMySql() (err error) {
-	dsn := "root:123456@tcp(127.0.0.1:3307)/user?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:shualeecode1314_CFZY@tcp(101.43.135.248:3306)/user?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:shualeecode1314_CFZY@tcp(localhost:3306)/user?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		return
