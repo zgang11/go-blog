@@ -2,6 +2,7 @@ package controller
 
 import (
 	"blog/dao/topic"
+	"blog/logic"
 	"blog/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -10,6 +11,8 @@ import (
 
 type TopicController struct {
 }
+
+var topicLogic = logic.TopicLogic{}
 
 // CreateTopic 创建连接列表
 func (a *TopicController) CreateTopic(c *gin.Context) {
@@ -35,7 +38,7 @@ func (a *TopicController) CreateTopic(c *gin.Context) {
 
 // GetTopic 获取连接列表
 func (a *TopicController) GetTopic(c *gin.Context) {
-	topicList, err := topic.GetTopic()
+	topicList, err := topicLogic.GetTopicLogic(c)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    1001,
@@ -44,9 +47,9 @@ func (a *TopicController) GetTopic(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code":     1000,
-		"message":  "success",
-		"linkList": topicList,
+		"code":      1000,
+		"message":   "success",
+		"topicList": topicList,
 	})
 	return
 }

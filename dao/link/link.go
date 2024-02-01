@@ -9,8 +9,8 @@ import (
 // CreateLink create link name
 func CreateLink(link *models.Link) (err error) {
 	links := &models.Link{}
-	err = database.DB.Debug().Where("url = ?", link.Url).Find(link).Error
-	if links.Id != 0 {
+	err = database.DB.Debug().Where("url = ?", link.Url).Find(&links).Error
+	if links.Url != "" {
 		return
 	}
 	err = database.DB.Debug().Create(&link).Error
@@ -21,7 +21,7 @@ func CreateLink(link *models.Link) (err error) {
 }
 
 func GetLinks() (linkList []models.Link, err error) {
-	if err = database.DB.Find(&linkList).Error; err != nil {
+	if err = database.DB.Preload("Topics").Find(&linkList).Error; err != nil {
 		return
 	}
 	return
