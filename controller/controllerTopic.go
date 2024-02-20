@@ -3,10 +3,8 @@ package controller
 import (
 	"blog/dao/topic"
 	"blog/logic"
-	"blog/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"time"
 )
 
 type TopicController struct {
@@ -16,23 +14,18 @@ var topicLogic = logic.TopicLogic{}
 
 // CreateTopic 创建连接列表
 func (a *TopicController) CreateTopic(c *gin.Context) {
-	topicName := c.PostForm("topicName")
-	url := c.PostForm("url")
-	serialNumber := c.PostForm("serialNumber")
-
-	params := &models.Topic{TopicName: topicName, Url: url, SerialNumber: serialNumber, CreateTime: time.Now().UnixNano() / 1e6,
-		UpdateTime: time.Now().UnixNano() / 1e6}
-	err := topic.CreateTopic(params)
+	message, err := topicLogic.CreateTopicLogic(c)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    1001,
-			"message": err,
+			"message": message,
+			"err":     err,
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code":    1000,
-		"message": "success",
+		"message": "创建成功",
 	})
 }
 

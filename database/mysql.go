@@ -11,8 +11,8 @@ var (
 
 // 初始化连接
 func InitMySql() (err error) {
-	dsn := "root:shualeecode1314_CFZY@tcp(101.43.135.248:3306)/user?charset=utf8mb4&parseTime=True&loc=Local" //线上
-	//dsn := "root:shualeecode1314_CFZY@tcp(127.0.0.1:3306)/user?charset=utf8mb4&parseTime=True&loc=Local" //线下
+	//dsn := "root:shualeecode1314_CFZY@tcp(101.43.135.248:3306)/user?charset=utf8mb4&parseTime=True&loc=Local" //线上
+	dsn := "root:shualeecode1314_CFZY@tcp(127.0.0.1:3306)/user?charset=utf8mb4&parseTime=True&loc=Local" //线下
 	db, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		return

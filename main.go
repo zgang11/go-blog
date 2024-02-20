@@ -18,7 +18,7 @@ func main() {
 	// 关闭连接
 	defer database.DB.Close()
 	// 模型和数据库表映射 创建表
-	database.DB.AutoMigrate(&models.User{}, &models.Category{}, &models.Article{}, &models.Tag{}, &models.ArticleTag{}, &models.Link{}, &models.Topic{}, &models.Company{})
+	database.DB.AutoMigrate(&models.User{}, &models.Category{}, &models.Article{}, &models.Tag{}, &models.ArticleTag{}, &models.Link{}, &models.Topic{}, &models.Company{}, &models.TopicTag{})
 	// 注册路由
 	r := gin.Default()
 	// 将中间件注册到全局 对所有路由生效
@@ -39,6 +39,8 @@ func main() {
 	routers.LoadCompany(r)
 	// leetcode题目链接
 	routers.LoadTopic(r)
+	// 题目类别标签
+	routers.LoadTopicTag(r)
 
 	r.Run(":8081")
 
